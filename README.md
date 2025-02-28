@@ -2,7 +2,7 @@
 
 A comprehensive Chrome extension for efficient daily planning, event management, productivity tracking, and website blocking.
 
-##screenshots
+## Screenshots
 ![demo 1](https://github.com/user-attachments/assets/f2fe4508-45eb-4b9e-bb73-c6606acbe210)
 ![demo2](https://github.com/user-attachments/assets/7b04a756-0138-469b-97a7-3ed69be53595)
 ![demo3 ](https://github.com/user-attachments/assets/82ee10ee-4fc1-4986-9554-7b59e379e762)

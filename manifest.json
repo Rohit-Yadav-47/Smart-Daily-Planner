@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Smart Daily Planner",
+  "version": "1.1.0",
+  "description": "Plan your day, create calendar events, track productivity, and block distracting websites",
+  "permissions": [
+    "identity",
+    "storage",
+    "tabs",
+    "webNavigation",
+    "activeTab",
+    "history",
+    "alarms",
+    "scripting",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "https://www.googleapis.com/*",
+    "https://api.groq.com/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["event-notification.js"],
+      "css": ["event-notification.css"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["event-notification.css"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "oauth2": {
+    "client_id": "213617386834-ffu5teipqq4vme7p3uef6dmb1i3p5d0b.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/calendar"]
+  }
+}

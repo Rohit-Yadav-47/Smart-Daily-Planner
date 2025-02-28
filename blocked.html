@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Website Blocked</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f9fafb;
+      color: #1f2937;
+    }
+    
+    .container {
+      text-align: center;
+      max-width: 500px;
+      padding: 40px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+    
+    .icon {
+      font-size: 64px;
+      color: #4f46e5;
+      margin-bottom: 24px;
+    }
+    
+    h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      color: #4f46e5;
+    }
+    
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    
+    .btn {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn:hover {
+      background-color: #4338ca;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+      }
+      
+      .container {
+        background-color: #1e293b;
+      }
+      
+      .icon {
+        color: #6366f1;
+      }
+      
+      h1 {
+        color: #6366f1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🚫</div>
+    <h1>Website Blocked</h1>
+    <p>
+      This website has been blocked by Daily Planner to help you stay focused and productive.
+    </p>
+    <p>
+      You can manage your blocked websites in the extension settings.
+    </p>
+    <a href="chrome://newtab" class="btn">Go to New Tab</a>
+  </div>
+  
+  <script>
+    document.querySelector('.btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      chrome.tabs.update({ url: 'chrome://newtab' });
+    });
+  </script>
+</body>
+</html>

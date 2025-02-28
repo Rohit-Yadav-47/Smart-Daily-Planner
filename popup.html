@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Daily Planner</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Smart Daily Planner</h1>
+      <div class="header-controls">
+        <div id="auth-status"></div>
+        <button id="settings-button" class="btn icon-btn" title="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+    </header>
+    
+    <div id="auth-section" class="hidden">
+      <button id="authorize-button" class="btn primary">Connect Google Calendar</button>
+    </div>
+    
+    <div id="content-area">
+      <div class="tabs">
+        <div class="tab active" data-tab="today">
+          <i class="fas fa-calendar-day"></i> Today
+        </div>
+        <div class="tab" data-tab="plan-day">
+          <i class="fas fa-tasks"></i> Plan Day
+        </div>
+        <div class="tab" data-tab="manual">
+          <i class="fas fa-edit"></i> Add Event
+        </div>
+        <div class="tab" data-tab="ai">
+          <i class="fas fa-robot"></i> AI
+        </div>
+        <div class="tab" data-tab="tracking">
+          <i class="fas fa-chart-line"></i> Tracking
+        </div>
+        <div class="tab" data-tab="blocker">
+          <i class="fas fa-ban"></i> Blocker
+        </div>
+      </div>
+
+      <!-- Today's events tab -->
+      <div id="today-tab" class="tab-content active">
+        <h2>Today's Schedule</h2>
+        <div class="current-date">
+          <div id="current-date"></div>
+        </div>
+        <div id="today-events-list" class="events-list">
+          <div class="loader-container">
+            <div class="loader-spinner"></div>
+            <p>Loading events...</p>
+          </div>
+        </div>
+        <div class="refresh-button-container">
+          <button id="refresh-events" class="btn">
+            <i class="fas fa-sync-alt"></i> Refresh Events
+          </button>
+        </div>
+      </div>
+      
+      <!-- Existing plan-day tab -->
+      <div id="plan-day-tab" class="tab-content">
+        <div class="plan-intro">
+          <h2>Daily Schedule Planner</h2>
+          <p>List your tasks for today, and I'll create a balanced schedule with breaks.</p>
+        </div>
+        
+        <div class="task-input-container">
+          <div id="task-list">
+            <div class="task-item">
+              <input type="text" class="task-input" placeholder="Enter a task...">
+              <input type="text" class="task-duration" placeholder="Duration (min)">
+            </div>
+          </div>
+          <button id="add-task-btn" class="btn small">
+            <i class="fas fa-plus"></i> Add Task
+          </button>
+        </div>
+        
+        <div class="day-options">
+          <div class="form-group">
+            <label>Day start time</label>
+            <input type="time" id="day-start-time" value="09:00">
+          </div>
+          <div class="form-group">
+            <label>Day end time</label>
+            <input type="time" id="day-end-time" value="17:00">
+          </div>
+          <div class="form-group">
+            <label>Break duration</label>
+            <input type="number" id="break-duration" value="15" min="5" max="60">
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button id="generate-schedule-btn" class="btn primary full-width">
+            <i class="fas fa-calendar-check"></i> Generate Schedule
+          </button>
+        </div>
+        
+        <div id="schedule-preview" class="hidden">
+          <h3>Your Daily Schedule</h3>
+          <div id="timeline-container"></div>
+          <button id="add-all-events" class="btn primary">
+            Add All Events to Calendar
+          </button>
+        </div>
+      </div>
+      
+      <!-- Existing manual tab -->
+      <div id="manual-tab" class="tab-content">
+        <h2>Add New Event</h2>
+        
+        <div class="form-group">
+          <label for="event-title">Event Title*</label>
+          <input type="text" id="event-title" placeholder="Meeting with team" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="event-location">Location</label>
+          <input type="text" id="event-location" placeholder="Conference Room or Online">
+        </div>
+        
+        <div class="form-group">
+          <label for="event-description">Description</label>
+          <textarea id="event-description" placeholder="Agenda and other details"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="event-start-date">Start Date*</label>
+          <input type="date" id="event-start-date" required>
+        </div>
+        
+        <div class="time-row">
+          <div class="form-group">
+            <label for="event-start-time">Start Time*</label>
+            <input type="time" id="event-start-time" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="event-end-time">End Time*</label>
+            <input type="time" id="event-end-time" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="event-end-date">End Date*</label>
+          <input type="date" id="event-end-date" required>
+        </div>
+        
+        <div class="form-actions">
+          <button id="add-event-button" class="btn primary full-width">
+            <i class="fas fa-plus-circle"></i> Add to Calendar
+          </button>
+        </div>
+      </div>
+      
+      <!-- AI Assistant tab -->
+      <div id="ai-tab" class="tab-content">
+        <h2>AI Scheduling Assistant</h2>
+        
+        <div class="chat-container">
+          <div class="chat-messages" id="chat-messages">
+            <div class="message bot-message">
+              Hi there! I'm your AI scheduling assistant. Simply describe your event or task in natural language, and I'll create a calendar event for you.
+            </div>
+            <div class="message bot-message">
+              For example: "Schedule a team meeting tomorrow at 3 PM for 1 hour" or "Plan a lunch with John on Friday at 1 PM at Cafe Coffee Day"
+            </div>
+          </div>
+          
+          <div class="chat-input-container">
+            <input type="text" id="chat-input" placeholder="Describe your event..." />
+            <button id="send-chat" class="btn primary">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- New Website Tracking tab -->
+      <div id="tracking-tab" class="tab-content">
+        <h2>Website Usage Tracking</h2>
+        <p class="description">Track how much time you spend on different websites.</p>
+        
+        <div class="tracking-stats">
+          <div class="tracking-header">
+            <h3>Today's Usage</h3>
+            <div class="tracking-actions">
+              <!-- Only one of these buttons will be shown at a time -->
+              <button id="start-tracking" class="btn small">
+                <i class="fas fa-play"></i> Start Tracking
+              </button>
+              <button id="stop-tracking" class="btn small danger hidden">
+                <i class="fas fa-stop"></i> Stop
+              </button>
+              <button id="clear-tracking" class="btn small">
+                <i class="fas fa-trash"></i> Clear Data
+              </button>
+            </div>
+          </div>
+          
+          <div id="tracking-status" class="tracking-status">
+            Tracking is currently disabled
+          </div>
+          
+          <div id="website-stats" class="website-stats">
+            <div class="no-data">No tracking data available yet</div>
+          </div>
+        </div>
+
+        <div class="productivity-analysis">
+          <button id="analyze-productivity" class="btn primary full-width">
+            <i class="fas fa-brain"></i> Analyze My Productivity
+          </button>
+          <div id="productivity-results" class="hidden">
+            <h4>Productivity Analysis</h4>
+            <div id="analysis-content" class="analysis-content">
+              <div class="loader-spinner"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tracking-info">
+          <p><i class="fas fa-info-circle"></i> Website tracking requires your permission to access browsing history</p>
+        </div>
+      </div>
+
+      <!-- New Website Blocker tab -->
+      <div id="blocker-tab" class="tab-content">
+        <h2>Website Blocker</h2>
+        <p class="description">Block distracting websites to improve your focus and productivity.</p>
+        
+        <div class="blocker-container">
+          <div class="form-group">
+            <label for="block-url">Add website to block</label>
+            <div class="input-with-btn">
+              <input type="text" id="block-url" placeholder="e.g., facebook.com, youtube.com">
+              <button id="add-block" class="btn primary">
+                <i class="fas fa-plus"></i> Add
+              </button>
+            </div>
+            <small>Just enter the domain without http:// or www</small>
+          </div>
+          
+          <div class="blocked-sites">
+            <h3>Currently Blocked</h3>
+            <div id="blocked-list" class="blocked-list">
+              <div class="no-data">No websites blocked yet</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="blocker-status">
+          <label class="switch-label">
+            <span>Blocking Active</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="blocker-toggle">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <div class="blocker-info">
+          <p><i class="fas fa-info-circle"></i> Blocking may require browser restart to take effect on already open tabs.</p>
+        </div>
+      </div>
+      
+      <div id="result-message"></div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Settings</h2>
+          <button id="close-settings" class="btn icon-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="groq-api-key">Groq API Key</label>
+            <div class="input-with-btn">
+              <input type="password" id="groq-api-key" placeholder="Enter your Groq API key">
+              <button id="toggle-api-key" class="btn small">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Google Calendar</label>
+            <button id="reconnect-calendar" class="btn">
+              Reconnect Calendar
+            </button>
+          </div>
+          
+          <div class="theme-selector form-group">
+            <label>Theme</label>
+            <div class="theme-options">
+              <button class="theme-btn" data-theme="light">Light</button>
+              <button class="theme-btn" data-theme="dark">Dark</button>
+              <button class="theme-btn active" data-theme="auto">Auto</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="save-settings" class="btn primary">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="tracking-service.js"></script>
+  <script src="groq-service.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -5,7 +5,7 @@ A comprehensive Chrome extension for efficient daily planning, event management,
 ## Screenshots
 ![demo 1](https://github.com/user-attachments/assets/f2fe4508-45eb-4b9e-bb73-c6606acbe210)
 ![demo2](https://github.com/user-attachments/assets/7b04a756-0138-469b-97a7-3ed69be53595)
-![demo3 ](https://github.com/user-attachments/assets/82ee10ee-4fc1-4986-9554-7b59e379e762)
+![demo3 ](https://github.com/user-attachments/assets/663d3b46-a418-46f5-8865-933a890248b6)
 ![demo4](https://github.com/user-attachments/assets/299a51aa-52f1-4a78-945e-59c6bbd4b28f)
 
 
